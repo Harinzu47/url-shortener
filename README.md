@@ -1,24 +1,29 @@
-# URL Shortener
+# IMM FT UMJ Link - Simple URL Shortener
 
-A modern, full-featured URL shortener application built with React and Supabase.
+A modern, full-featured URL shortener application exclusively designed for IMM FT UMJ community. Built with **React** and **Supabase**, featuring a premium design with Maroon & Gold theme.
 
-![URL Shortener Banner](/public/banner.png)
+![Landing Page](./screenshots/landing-page.png)
 
 ## ✨ Features
 
+- **Premium UI/UX** - Modern interface using IMM FT UMJ customized with Space Grotesk font and responsive design
 - **URL Shortening** - Transform long URLs into short, memorable links
-- **Custom URLs** - Create branded short links with custom aliases
-- **QR Codes** - Automatic QR code generation for each shortened link
-- **Click Analytics** - Track total clicks for your links
-- **Device & Location Stats** - Analyze visitor device types and geographic locations
-- **User Authentication** - Secure login and signup with profile pictures
-- **Dashboard** - Manage all your links in one place with search and pagination
-- **Responsive Design** - Works seamlessly on desktop and mobile devices
+- **Custom Aliases** - Create branded short links (e.g., `imm.link/event2024`)
+- **QR Codes** - Automatic, high-quality QR code generation for every link
+- **Advanced Analytics** - Track clicks, device types, and geographic locations in real-time
+- **Secure Authentication** - Login/Register with profile picture support
+- **Dashboard** - Centralized management for all your links with search and pagination
+
+## 📸 Screenshots
+
+| Login Page | Signup Page |
+|:---:|:---:|
+| ![Login](./screenshots/login-page.png) | ![Signup](./screenshots/signup-page.png) |
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: React 19, React Router 7
-- **Styling**: Tailwind CSS 4, Radix UI Components
+- **Styling**: Tailwind CSS 4, Radix UI Components, Space Grotesk Font
 - **Backend**: Supabase (Database, Auth, Storage)
 - **Build Tool**: Vite 7
 - **Charts**: Recharts
@@ -34,30 +39,30 @@ A modern, full-featured URL shortener application built with React and Supabase.
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
    git clone <your-repo-url>
    cd url-shortener
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. Set up environment variables:
+3. **Set up environment variables:**
    ```bash
    cp .env.example .env
    ```
    
    Update `.env` with your Supabase credentials:
-   ```
+   ```env
    VITE_SUPABASE_KEY=your_supabase_anon_key
    VITE_SUPABASE_URL=https://your-project.supabase.co
    VITE_BASE_URL=http://localhost:5173
    ```
 
-4. Start the development server:
+4. **Start the development server:**
    ```bash
    npm run dev
    ```
@@ -68,13 +73,14 @@ A modern, full-featured URL shortener application built with React and Supabase.
 
 ```
 src/
-├── components/       # Reusable UI components
-│   └── ui/          # Shadcn/Radix UI components
-├── db/              # Supabase API functions
-├── hooks/           # Custom React hooks
-├── layouts/         # Page layouts
-├── pages/           # Route pages
-└── context.jsx      # Global context provider
+├── components/       # UI components (Header, Footer, Inputs, Buttons)
+├── db/              # Supabase API integration (Auth, Urls, Clicks)
+├── hooks/           # Custom hooks (useFetch)
+├── layouts/         # App layouts with Toast provider
+├── pages/           # Landing, Auth, Dashboard, Link Details
+├── context.jsx      # Authentication context
+├── index.css        # Global styles & Tailwind configuration
+└── main.jsx         # Entry point
 ```
 
 ## 🔧 Available Scripts
@@ -84,33 +90,6 @@ src/
 | `npm run dev` | Start development server |
 | `npm run build` | Build for production |
 | `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint |
-
-## 📊 Supabase Setup
-
-Create the following tables in your Supabase project:
-
-### URLs Table
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| user_id | uuid | Foreign key to auth.users |
-| title | text | Link title |
-| original_url | text | Original long URL |
-| short_url | text | Generated short code |
-| custom_url | text | Optional custom alias |
-| qr | text | QR code image URL |
-| created_at | timestamp | Creation timestamp |
-
-### Clicks Table
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| url_id | uuid | Foreign key to urls |
-| city | text | Visitor city |
-| country | text | Visitor country |
-| device | text | Device type |
-| created_at | timestamp | Click timestamp |
 
 ## 📝 License
 
@@ -118,4 +97,4 @@ MIT License - feel free to use this project for personal or commercial purposes.
 
 ## 👨‍💻 Author
 
-Khalid Jundullah
+**Khalid Jundullah**
