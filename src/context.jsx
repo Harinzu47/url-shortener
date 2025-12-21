@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useCallback } from "react";
 import useFetch from "./hooks/use-fetch";
 import { getCurrentUser } from "./db/apiAuth";
 
@@ -11,7 +11,8 @@ const UrlProvider = ({children}) => {
 
     useEffect(() => {
         fetchUser();
-    }, [fetchUser]);
+    }, []); // Run only on mount
+
     return ( 
         <UrlContext.Provider value={{user, fetchUser, loading, isAuthenticated}}>
             {children}

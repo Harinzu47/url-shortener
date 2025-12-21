@@ -3,7 +3,7 @@ import { BarLoader } from "react-spinners";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import Error from "@/components/error";
 import { UrlState } from "@/context";
 import useFetch from "@/hooks/use-fetch";
@@ -42,7 +42,6 @@ const Dashboard = () => {
     if (urls?.length) fnClicks();
   }, [urls?.length]);
 
-  // Reset to page 1 when search query changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
@@ -51,7 +50,6 @@ const Dashboard = () => {
     url.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Pagination calculations
   const totalPages = Math.ceil((filteredUrls?.length || 0) / LINKS_PER_PAGE);
   const startIndex = (currentPage - 1) * LINKS_PER_PAGE;
   const paginatedUrls = filteredUrls?.slice(startIndex, startIndex + LINKS_PER_PAGE);
@@ -66,46 +64,74 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col gap-8">
+      {/* Loading Bar */}
       {(loading || loadingClicks) && (
-        <BarLoader width={"100%"} color="#36d7b7" />
+        <BarLoader width={"100%"} color="#800000" />
       )}
-      <div className="grid grid-cols-2 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Links Created</CardTitle>
+
+      {/* Page Header */}
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold text-[#181010] dark:text-white">Dashboard</h1>
+        <p className="text-[#5c4040] dark:text-gray-400">Manage your shortened links and track performance.</p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Card className="bg-white dark:bg-[#2a1212] border-[#e7dada] dark:border-[#3a2020]">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-[#5c4040] dark:text-gray-400">Total Links</CardTitle>
+            <span className="material-symbols-outlined text-[#800000]">link</span>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{urls?.length || 0}</p>
+            <p className="text-3xl font-bold text-[#181010] dark:text-white">{urls?.length || 0}</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Total Clicks</CardTitle>
+
+        <Card className="bg-white dark:bg-[#2a1212] border-[#e7dada] dark:border-[#3a2020]">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-[#5c4040] dark:text-gray-400">Total Clicks</CardTitle>
+            <span className="material-symbols-outlined text-[#FFD700]">touch_app</span>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{clicks?.length || 0}</p>
+            <p className="text-3xl font-bold text-[#181010] dark:text-white">{clicks?.length || 0}</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-r from-[#800000] to-[#5e0000] border-0 sm:col-span-2 lg:col-span-1">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-white/80">Ready to create?</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CreateLink />
           </CardContent>
         </Card>
       </div>
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-extrabold">My Links</h1>
-        <CreateLink />
+
+      {/* Links Section Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-xl font-bold text-[#181010] dark:text-white">My Links</h2>
+        
+        {/* Search Input */}
+        <div className="relative w-full sm:w-auto">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8d5e5e]" />
+          <Input
+            type="text"
+            placeholder="Search links..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 w-full sm:w-[280px] bg-white dark:bg-[#2a1212] border-[#e7dada] dark:border-[#3a2020] focus-visible:ring-[#800000]"
+          />
+        </div>
       </div>
-      <div className="relative">
-        <Input
-          type="text"
-          placeholder="Search links..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <Filter className="absolute top-2 right-2 p-1" />
-      </div>
+
       {error && <Error message={error?.message} />}
-      
+
       {/* Links List */}
-      {(paginatedUrls || []).map((url, i) => {
-        return <LinkCard key={url.id || i} url={url} fetchUrls={fnUrls} />;
-      })}
+      <div className="flex flex-col gap-4">
+        {(paginatedUrls || []).map((url, i) => (
+          <LinkCard key={url.id || i} url={url} fetchUrls={fnUrls} />
+        ))}
+      </div>
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
@@ -115,11 +141,12 @@ const Dashboard = () => {
             size="sm"
             onClick={handlePrevPage}
             disabled={currentPage === 1}
+            className="border-[#e7dada] dark:border-[#3a2020] hover:bg-[#f8f5f5] dark:hover:bg-[#3a2020]"
           >
             <ChevronLeft className="h-4 w-4" />
             Previous
           </Button>
-          <span className="text-sm text-gray-400">
+          <span className="text-sm text-[#5c4040] dark:text-gray-400">
             Page {currentPage} of {totalPages}
           </span>
           <Button
@@ -127,6 +154,7 @@ const Dashboard = () => {
             size="sm"
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
+            className="border-[#e7dada] dark:border-[#3a2020] hover:bg-[#f8f5f5] dark:hover:bg-[#3a2020]"
           >
             Next
             <ChevronRight className="h-4 w-4" />
@@ -136,8 +164,14 @@ const Dashboard = () => {
 
       {/* Empty state */}
       {filteredUrls?.length === 0 && !loading && (
-        <div className="text-center text-gray-400 py-8">
-          {searchQuery ? "No links found matching your search." : "No links created yet. Create your first link!"}
+        <div className="text-center py-12 bg-[#f8f5f5] dark:bg-[#2a1212] rounded-2xl border border-[#e7dada] dark:border-[#3a2020]">
+          <span className="material-symbols-outlined text-[48px] text-[#8d5e5e] mb-4">link_off</span>
+          <p className="text-[#5c4040] dark:text-gray-400">
+            {searchQuery ? "No links found matching your search." : "No links created yet."}
+          </p>
+          {!searchQuery && (
+            <p className="text-sm text-[#8d5e5e] mt-2">Create your first link to get started!</p>
+          )}
         </div>
       )}
     </div>

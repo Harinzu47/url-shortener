@@ -13,13 +13,13 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import Error from "./error";
-import { Card } from "./ui/card";
 import { useEffect, useRef, useState } from "react";
 import * as yup from "yup";
 import QRCode from "react-qrcode-logo";
 import useFetch from "@/hooks/use-fetch";
 import { createUrl } from "@/db/apiUrl";
 import { BeatLoader } from "react-spinners";
+import { toast } from "sonner";
 
 const CreateLink = () => {
   const { user } = UrlState();
@@ -59,10 +59,11 @@ const CreateLink = () => {
   } = useFetch(createUrl, { ...fromValues, user_id: user.id });
 
   useEffect(() => {
-    if ((error === null) & data) {
+    if (error === null && data) {
+      toast.success("Link created successfully!");
       navigate(`/link/${data[0].id}`);
     }
-  }, [error, data]);
+  }, [error, data, navigate]);
 
   const createNewLink = async () => {
     setErrors([]);
@@ -76,7 +77,6 @@ const CreateLink = () => {
       e?.inner?.forEach((err) => {
         newErrors[err.path] = err.message;
       });
-
       setErrors(newErrors);
     }
   };
@@ -89,51 +89,109 @@ const CreateLink = () => {
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="ghost">Create New Link</Button>
+        <Button className="bg-white hover:bg-white/90 text-[#800000] font-bold px-6 py-3 h-auto">
+          <span className="material-symbols-outlined mr-2 text-[20px]">add_link</span>
+          Create New Link
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-white dark:bg-[#2a1212] border-[#e7dada] dark:border-[#3a2020]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">New Link</DialogTitle>
-          <DialogDescription>
-            transfrom your long link to short. Click save when you&apos;re done.
+          <DialogTitle className="text-xl font-bold text-[#181010] dark:text-white flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#800000]">add_link</span>
+            Create New Link
+          </DialogTitle>
+          <DialogDescription className="text-[#5c4040] dark:text-gray-400">
+            Transform your long URL into a short, shareable link.
           </DialogDescription>
         </DialogHeader>
-        {fromValues?.longUrl && (
-          <QRCode value={fromValues?.longUrl} size={250} ref={ref} />
-        )}
-        <Input
-          id="title"
-          type="text"
-          placeholder="Your Link Title"
-          value={fromValues.title}
-          onChange={handleChange}
-        />
-        {errors.title && <Error message={errors.title} />}
-        <Input
-          id="longUrl"
-          type="text"
-          placeholder="Your Original Link"
-          value={fromValues.longUrl}
-          onChange={handleChange}
-        />
-        {errors.longUrl && <Error message={errors.longUrl} />}
-        <div className="flex items-center gap-2">
-          <Card className="p-2">immftumj.org</Card> /
-          <Input
-            id="customUrl"
-            type="text"
-            value={fromValues.customUrl}
-            onChange={handleChange}
-            placeholder="Custom Link Optional"
-          />
+
+        <div className="flex flex-col gap-4 py-4">
+          {/* QR Code Preview */}
+          {fromValues?.longUrl && (
+            <div className="flex justify-center p-4 bg-[#f8f5f5] dark:bg-[#3a2020] rounded-lg">
+              <QRCode 
+                value={fromValues?.longUrl} 
+                size={180} 
+                ref={ref}
+                bgColor="#ffffff"
+                fgColor="#800000"
+                qrStyle="dots"
+                eyeRadius={8}
+              />
+            </div>
+          )}
+
+          {/* Title Input */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-[#181010] dark:text-white">Link Title</label>
+            <Input
+              id="title"
+              type="text"
+              placeholder="e.g., Event Registration 2024"
+              value={fromValues.title}
+              onChange={handleChange}
+              className="h-12 bg-white dark:bg-[#3a2020] border-[#e7dada] dark:border-[#4a2e2e] focus-visible:ring-[#800000]"
+            />
+            {errors.title && <Error message={errors.title} />}
+          </div>
+
+          {/* Long URL Input */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-[#181010] dark:text-white">Original URL</label>
+            <Input
+              id="longUrl"
+              type="text"
+              placeholder="https://example.com/your-long-url"
+              value={fromValues.longUrl}
+              onChange={handleChange}
+              className="h-12 bg-white dark:bg-[#3a2020] border-[#e7dada] dark:border-[#4a2e2e] focus-visible:ring-[#800000]"
+            />
+            {errors.longUrl && <Error message={errors.longUrl} />}
+          </div>
+
+          {/* Custom URL Input */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-[#181010] dark:text-white">Custom Alias (Optional)</label>
+            <div className="flex items-center gap-2">
+              <div className="flex-shrink-0 h-12 px-4 bg-[#f8f5f5] dark:bg-[#3a2020] border border-[#e7dada] dark:border-[#4a2e2e] rounded-lg flex items-center text-[#800000] font-medium text-sm">
+                imm.link/
+              </div>
+              <Input
+                id="customUrl"
+                type="text"
+                value={fromValues.customUrl}
+                onChange={handleChange}
+                placeholder="my-custom-link"
+                className="h-12 bg-white dark:bg-[#3a2020] border-[#e7dada] dark:border-[#4a2e2e] focus-visible:ring-[#800000]"
+              />
+            </div>
+          </div>
+
+          {error && <Error message={error.message} />}
         </div>
-        {error && <Error message={error.message} />}
-        <DialogFooter>
+
+        <DialogFooter className="gap-2">
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button 
+              variant="outline"
+              className="border-[#e7dada] dark:border-[#3a2020] hover:bg-[#f8f5f5] dark:hover:bg-[#3a2020]"
+            >
+              Cancel
+            </Button>
           </DialogClose>
-          <Button disabled={loading} onClick={createNewLink} type="submit">
-            {loading ? <BeatLoader size={10} color="white" /> : "Create"}
+          <Button 
+            disabled={loading} 
+            onClick={createNewLink}
+            className="bg-[#800000] hover:bg-[#5e0000] text-white font-bold"
+          >
+            {loading ? (
+              <BeatLoader size={10} color="white" />
+            ) : (
+              <>
+                <span className="material-symbols-outlined mr-2 text-[18px]">check</span>
+                Create Link
+              </>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

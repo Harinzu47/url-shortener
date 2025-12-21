@@ -23,15 +23,14 @@ const RedirectLink = () => {
     if (!loading && data) {
       fnStats();
     }
-  }, [loading]);
+  }, [loading, data]);
 
   if (loading || loadingStats) {
     return (
-      <>
-        <BarLoader width={"100%"} color="#36d7b7" />
-        <br />
-        Redirecting...
-      </>
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+        <BarLoader width={200} color="#800000" />
+        <p className="text-[#5c4040] font-medium">Redirecting...</p>
+      </div>
     );
   }
 
