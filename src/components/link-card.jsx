@@ -32,7 +32,7 @@ const LinkCard = ({ url, fetchUrls }) => {
       await fnDelete();
       toast.success("Link deleted successfully!");
       fetchUrls();
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete link");
     }
   };
@@ -64,35 +64,35 @@ const LinkCard = ({ url, fetchUrls }) => {
           {url?.original_url}
         </span>
         <span className="text-xs text-[#8d5e5e] mt-auto pt-2">
-          Created {new Date(url?.created_at).toLocaleDateString('id-ID', { 
-            day: 'numeric', 
-            month: 'short', 
-            year: 'numeric' 
+          Created {new Date(url?.created_at).toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
           })}
         </span>
       </Link>
 
       {/* Actions */}
       <div className="flex md:flex-col gap-2 self-start">
-        <Button 
-          variant="outline" 
-          size="icon" 
+        <Button
+          variant="outline"
+          size="icon"
           onClick={handleCopy}
           className="h-9 w-9 border-[#e7dada] dark:border-[#3a2020] hover:bg-[#800000] hover:text-white hover:border-[#800000] transition-all"
         >
           <Copy className="h-4 w-4" />
         </Button>
-        <Button 
-          variant="outline" 
-          size="icon" 
+        <Button
+          variant="outline"
+          size="icon"
           onClick={downloadImage}
           className="h-9 w-9 border-[#e7dada] dark:border-[#3a2020] hover:bg-[#FFD700] hover:text-[#181010] hover:border-[#FFD700] transition-all"
         >
           <Download className="h-4 w-4" />
         </Button>
-        <Button 
-          variant="outline" 
-          size="icon" 
+        <Button
+          variant="outline"
+          size="icon"
           onClick={handleDelete}
           className="h-9 w-9 border-[#e7dada] dark:border-[#3a2020] hover:bg-red-500 hover:text-white hover:border-red-500 transition-all"
         >

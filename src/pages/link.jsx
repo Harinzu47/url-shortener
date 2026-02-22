@@ -7,7 +7,7 @@ import { getClicksForUrl } from "@/db/apiClick";
 import { deleteUrl, getUrl } from "@/db/apiUrl";
 import useFetch from "@/hooks/use-fetch";
 import { Copy, Download, LinkIcon, Trash, ExternalLink, ArrowLeft } from "lucide-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { BarLoader, BeatLoader } from "react-spinners";
 import { toast } from "sonner";
@@ -38,7 +38,7 @@ const LinkPage = () => {
       await fnDelete();
       toast.success("Link deleted successfully!");
       navigate("/dashboard");
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete link");
     }
   };
@@ -65,6 +65,7 @@ const LinkPage = () => {
   useEffect(() => {
     fn();
     fnStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) {
@@ -84,8 +85,8 @@ const LinkPage = () => {
       )}
 
       {/* Back Button */}
-      <Link 
-        to="/dashboard" 
+      <Link
+        to="/dashboard"
         className="flex items-center gap-2 text-[#5c4040] dark:text-gray-400 hover:text-[#800000] transition-colors w-fit"
       >
         <ArrowLeft className="h-4 w-4" />

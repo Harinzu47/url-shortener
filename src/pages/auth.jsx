@@ -15,6 +15,7 @@ const Auth = () => {
   useEffect(() => {
     if (isAuthenticated && !loading)
       navigate(`/dashboard?${longLink ? `createNew=${longLink}` : ""}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, loading]);
 
   return (
@@ -33,7 +34,7 @@ const Auth = () => {
           )}
         </h1>
         <p className="text-[#5c4040] dark:text-gray-400">
-          {longLink 
+          {longLink
             ? "You need to be logged in to create shortened links."
             : "Sign in to your account or create a new one."
           }
@@ -44,13 +45,13 @@ const Auth = () => {
       <div className="w-full max-w-[420px] bg-white dark:bg-[#2a1212] rounded-2xl border border-[#e7dada] dark:border-[#3a2020] shadow-lg overflow-hidden">
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-[#f8f5f5] dark:bg-[#3a2020] rounded-none h-14 p-0">
-            <TabsTrigger 
+            <TabsTrigger
               value="login"
               className="rounded-none h-full text-base font-medium data-[state=active]:bg-white data-[state=active]:dark:bg-[#2a1212] data-[state=active]:text-[#800000] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#800000]"
             >
               Login
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="signup"
               className="rounded-none h-full text-base font-medium data-[state=active]:bg-white data-[state=active]:dark:bg-[#2a1212] data-[state=active]:text-[#800000] data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-[#800000]"
             >

@@ -1,7 +1,7 @@
 import { storeClicks } from "@/db/apiClick";
 import { getLongUrl } from "@/db/apiUrl";
 import useFetch from "@/hooks/use-fetch";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 
@@ -17,12 +17,14 @@ const RedirectLink = () => {
 
   useEffect(() => {
     fn();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!loading && data) {
       fnStats();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, data]);
 
   if (loading || loadingStats) {

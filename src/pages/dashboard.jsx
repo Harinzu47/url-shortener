@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,10 +36,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     fnUrls();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (urls?.length) fnClicks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urls?.length]);
 
   useEffect(() => {
@@ -110,7 +112,7 @@ const Dashboard = () => {
       {/* Links Section Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl font-bold text-[#181010] dark:text-white">My Links</h2>
-        
+
         {/* Search Input */}
         <div className="relative w-full sm:w-auto">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8d5e5e]" />
